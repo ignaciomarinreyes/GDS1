@@ -29,7 +29,7 @@
   <modules>
       
     <module>DrawYourRouteAPI</module>
-      
+    <module>DrawYourRoute</module>
   </modules>
   
 </project>
