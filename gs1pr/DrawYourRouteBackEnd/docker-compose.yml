@@ -1,0 +1,23 @@
+version: "3.7"
+
+networks:
+  api_network:
+
+services:
+  api:
+    image: tomcat:9.0.35
+    command: sh -c "catalina.sh run"
+    ports:
+      - 8888:8080
+    volumes:
+      - ./webservices/:/usr/local/tomcat/webapps/
+    networks:
+      api_network:
+  
+  adminer:
+    image: adminer:latest
+    restart: always
+    ports:
+      - 12800:8080
+    networks:
+      api_network:
