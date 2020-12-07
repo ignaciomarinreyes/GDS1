@@ -1,6 +1,7 @@
 package com.gs1.drawyourrouteapi.resources;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -15,6 +16,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import model.MuchasPersonas;
 import model.Persona;
+import org.json.JSONObject;
+
 
 /**
  *
@@ -22,15 +25,10 @@ import model.Persona;
  */
 @Path("/")
 public class JavaEE8Resource {
-    
-    @Context
-    HttpServletRequest request;
-    
     private MuchasPersonas mp;
     private Persona p1;
     private Persona p2;
     private Persona p3;
-    private Persona p4;
     private Persona p5;
     
     public JavaEE8Resource() {
@@ -38,44 +36,60 @@ public class JavaEE8Resource {
         p1 =  new Persona("Juan",35,"passwd",1);
         p2 =  new Persona("Maria",15,"passwd",2);
         p3 =  new Persona("Pedro",65,"passwd",3);
-        p4 =  new Persona("Juan",85,"passwd",4);
         p5 =  new Persona("Julian",25,"passwd",5);  
         mp.añadirPersona(p1);
         mp.añadirPersona(p2);
         mp.añadirPersona(p3);
-        mp.añadirPersona(p4);
         mp.añadirPersona(p5);
+        
+        p2.añadirAmigo(p1);
+        p2.añadirAmigo(p5);
     }
     
     
-    @GET
+    @GET //Funciona
     @Path("/usuarios")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Persona> getUsuarios() {
-        return mp.getUsuarios();
+    public Response getUsuarios() {
+        return Response.ok(mp.getUsuarios()).build();
     }
     
-    @GET
-    @Path("usuarios/{nombre}")
+    @GET //Funciona
+    @Path("/usuarios/{nombre}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Persona> getUsuariosByNombre(@PathParam("nombre") String nombre) {
-        return mp.getPersonaByNombre(nombre);
+    public Response getUsuariosByNombre(@PathParam("nombre") String nombre) {
+        return Response.ok(mp.getPersonaByNombre(nombre)).build();
     }
     
-    @POST
+    @POST //Funciona
     @Path("/usuario")
     @Produces(MediaType.APPLICATION_JSON)
-    public Persona getUsuariosByNombreYContraseña() {
-       return new Persona("Pedro", 20, "passwd", 0);
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getUsuariosByNombreYContraseña(HashMap<String,String> usuario) {
+        JSONObject jo = new JSONObject(usuario);
+        String nombre = jo.getString("nombre");
+        String passwd = jo.getString("contraseña");
+        return Response.ok(mp.getPersonaByNombreYContraseña(nombre, passwd)).build();
     }
     
-    @POST
-    //@Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public Persona añadirNuevoUsuario() {
-        Persona p = new Persona("Iris", 34, "passwd", 6);
+    @POST 
+    @Path("/añadirUsuario")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response añadirNuevoUsuario(Persona p) {
         mp.añadirPersona(p);
-        return mp.getUsuarios().get(4);
+        return Response.ok(mp.getUsuarios()).build();
+    }
+    
+    @GET //Funciona
+    @Path("/amigos/{nombre}")
+    public Response getAmigos(@PathParam("nombre") String usuario) {
+        for (Persona persona : mp.getUsuarios()) {
+            if(persona.getNombre().equals(usuario)) {
+                return Response.ok(persona.getAmigos()).build();
+            }
+        }
+        return Response.noContent().build();
     }
     
 }
