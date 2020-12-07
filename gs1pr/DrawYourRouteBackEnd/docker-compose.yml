@@ -5,19 +5,11 @@ networks:
 
 services:
   api:
-    image: tomcat:9.0.35
+    image: tomcat:9.0.35-jdk11-corretto
     command: sh -c "catalina.sh run"
     ports:
       - 8888:8080
     volumes:
       - ./webservices/:/usr/local/tomcat/webapps/
-    networks:
-      api_network:
-  
-  adminer:
-    image: adminer:latest
-    restart: always
-    ports:
-      - 12800:8080
     networks:
       api_network:
