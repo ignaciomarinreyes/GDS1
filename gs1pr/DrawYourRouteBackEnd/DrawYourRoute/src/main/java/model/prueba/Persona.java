@@ -1,4 +1,4 @@
-package model;
+package model.prueba;
 
 public class Persona {
     private String nombre;

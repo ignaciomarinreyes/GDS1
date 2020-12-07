@@ -1,4 +1,4 @@
-package model;
+package model.prueba;
 
 import java.util.ArrayList;
 

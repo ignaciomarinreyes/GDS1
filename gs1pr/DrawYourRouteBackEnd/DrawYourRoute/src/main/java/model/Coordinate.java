@@ -11,17 +11,33 @@ public class Coordinate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_coordinate")
-    private int id_coordinate;
+    @Column(name = "id")
+    private int id;
 
-    @Column(name = "latitud")
-    private Double latitud;
+    @Column(name = "latitude")
+    private Double latitude;
 
-    @Column(name = "longitud")
-    private Double longitud;
+    @Column(name = "longitude")
+    private Double longitude;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_route", foreignKey = @ForeignKey(name = "fk_id_route_coordinate"))
+    @ManyToOne()
+    @JoinColumn(nullable = false, name = "id_route", foreignKey = @ForeignKey(name = "fk_coordinate_to_route"))
     private Route route;
+
+    public Coordinate() {
+    }
+
+    public Coordinate(Double latitude, Double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
 
 }

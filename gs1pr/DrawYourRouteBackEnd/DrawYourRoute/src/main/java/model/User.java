@@ -5,6 +5,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "user")
@@ -15,75 +17,107 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user")
-    private int id_user;
+    @Column(name = "id")
+    private int id;
 
-    @Column(name = "nombre")
-    private String nombre;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Column(name = "name", nullable = false)
+    private String name;
+    
+    @Column(name = "lastName", nullable = false)
+    private String lastName;
+    
+    @Column(name = "nickName", nullable = false, unique=true)
+    private String nickName;
+    
+    @Column(name = "password", nullable = false)
+    private String password;
+    
+    @Column(name = "email", nullable = false)
+    private String email;
+    
+    @OneToMany(mappedBy = "user")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Route> routes;
+    private Set<Route> routes;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinTable(name = "amigos", joinColumns = @JoinColumn(name = "id_user1"),
-            inverseJoinColumns = @JoinColumn(name = "id_user2"),
-            foreignKey = @ForeignKey(name = "fk_id_user1_amigos"),
-            inverseForeignKey = @ForeignKey(name = "fk_id_user2_amigos"))
-    List< User> amigos;
+    @JoinTable(name = "friend", joinColumns = @JoinColumn(name = "id_user_1"),
+            inverseJoinColumns = @JoinColumn(name = "id_user_2"),
+            foreignKey = @ForeignKey(name = "fk_friend_to_user_1"),
+            inverseForeignKey = @ForeignKey(name = "fk_friend_to_user_2"))
+    private Set<User> friends;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinTable(name = "likes", joinColumns = @JoinColumn(name = "id_user"),
+    @JoinTable(name = "like_", joinColumns = @JoinColumn(name = "id_user"),
             inverseJoinColumns = @JoinColumn(name = "id_route"),
-            foreignKey = @ForeignKey(name = "fk_id_user_likes"),
-            inverseForeignKey = @ForeignKey(name = "fk_id_route_likes"))
-    List< Route> likes;
+            foreignKey = @ForeignKey(name = "fk_like_to_user"),
+            inverseForeignKey = @ForeignKey(name = "fk_like_to_route"))
+    private Set<Route> likes;
 
     public User() {
 
     }
-
-    public User(Integer id_user) {
-        this.id_user = id_user;
+    
+    public User(int id, String name, String lastName, String nickName, String password, String email) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.nickName = nickName;
+        this.password = password;
+        this.email = email;
     }
 
-    public User(String nombre) {
-        this.nombre = nombre;
+    public User(String name, String lastName, String nickName, String password, String email) {
+        this.name = name;
+        this.lastName = lastName;
+        this.nickName = nickName;
+        this.password = password;
+        this.email = email;
     }
 
-    public User(Integer id_user, String nombre) {
-        this.id_user = id_user;
-        this.nombre = nombre;
+    public String getName() {
+        return name;
     }
 
-    public Integer getId_user() {
-        return id_user;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setId_user(Integer id_user) {
-        this.id_user = id_user;
+    public String getLastName() {
+        return lastName;
     }
 
-    public String getNombre() {
-        return nombre;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public String getNickName() {
+        return nickName;
     }
 
-    public List<Route> getRoutes() {
-        return routes;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
-    public void setRoutes(List<Route> routes) {
-        this.routes = routes;
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
     public String toString() {
-        return "User{" + "id_user=" + id_user + ", nombre='" + nombre + '\'' + ", routes=" + routes + '}';
+        return "User{" + "id=" + id + ", name=" + name + ", lastName=" + lastName + ", nickName=" + nickName + ", password=" + password + ", email=" + email + '}';
     }
 }

@@ -1,10 +1,12 @@
 package model;
 
+import java.util.Date;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "route")
@@ -15,55 +17,45 @@ public class Route {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_route")
-    private int id_route;
+    @Column(name = "id")
+    private int id;
 
-    @Column(name = "nombre")
-    private String nombre;
+    @Column(name = "name", nullable = false)
+    private String name;
+    
+    @Column(name = "date", nullable = false)
+    private Date date;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_user", foreignKey = @ForeignKey(name = "fk_id_user_route"))
+    @ManyToOne()
+    @JoinColumn(nullable = false, name = "id_user", foreignKey = @ForeignKey(name = "fk_route_to_user"))
     private User user;
 
-    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "route")
     private List<Coordinate> coordinates;
 
     public Route() {
 
     }
 
-    public Route(String nombre, User user) {
-        this.nombre = nombre;
-        this.user = user;
+    public Route(String name, Date date) {
+        this.name = name;
+        this.date = date;
     }
 
-    public int getId_route() {
-        return id_route;
+    public String getName() {
+        return name;
     }
 
-    public void setId_route(int id_route) {
-        this.id_route = id_route;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Date getDate() {
+        return date;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return "Route{" + "id_route=" + id_route + ", nombre='" + nombre + '\'' + ", user=" + user.getNombre() + '}';
-    }
 }

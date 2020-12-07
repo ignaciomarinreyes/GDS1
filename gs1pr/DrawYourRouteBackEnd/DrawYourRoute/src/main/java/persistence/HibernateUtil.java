@@ -1,5 +1,7 @@
 package persistence;
 
+import javax.net.ssl.SSLException;
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -37,8 +39,9 @@ public class HibernateUtil {
     }
 
     public static void shutdown() {
-        if (registry != null) {
-            StandardServiceRegistryBuilder.destroy(registry);
-        }
+        try{
+            sessionFactory.close();
+        }catch(HibernateException e){}
+        
     }
 }
