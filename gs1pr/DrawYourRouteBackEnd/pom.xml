@@ -26,14 +26,9 @@
   </properties>
     
   
-  <modules>
-      
+  <modules>      
     <module>DrawYourRouteAPI</module>
     <module>DrawYourRoute</module>
-    <module>BasesDatosTablas</module>
-    <module>Practica</module>
-    <module>Spotify</module>
-    <module>CompresorArchivos</module>
   </modules>
   
 </project>

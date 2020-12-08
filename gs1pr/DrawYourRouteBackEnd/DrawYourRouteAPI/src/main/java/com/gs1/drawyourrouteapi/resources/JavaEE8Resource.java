@@ -14,8 +14,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import model.MuchasPersonas;
-import model.Persona;
+import model.prueba.MuchasPersonas;
+import model.prueba.Persona;
 import org.json.JSONObject;
 
 
