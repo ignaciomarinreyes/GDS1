@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -18,28 +19,34 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @Expose
     private int id;
 
     @Column(name = "name", nullable = false)
+    @Expose
     private String name;
     
     @Column(name = "lastName", nullable = false)
+    @Expose
     private String lastName;
     
     @Column(name = "nickName", nullable = false, unique=true)
+    @Expose
     private String nickName;
     
     @Column(name = "password", nullable = false)
+    @Expose
     private String password;
     
     @Column(name = "email", nullable = false)
+    @Expose
     private String email;
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Route> routes;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinTable(name = "friend", joinColumns = @JoinColumn(name = "id_user_1"),
             inverseJoinColumns = @JoinColumn(name = "id_user_2"),
@@ -47,7 +54,7 @@ public class User {
             inverseForeignKey = @ForeignKey(name = "fk_friend_to_user_2"))
     private Set<User> friends;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinTable(name = "like_", joinColumns = @JoinColumn(name = "id_user"),
             inverseJoinColumns = @JoinColumn(name = "id_route"),

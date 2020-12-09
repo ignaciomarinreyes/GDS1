@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import javax.persistence.*;
 
 @Entity
@@ -12,12 +13,15 @@ public class Coordinate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @Expose
     private int id;
 
     @Column(name = "latitude")
+    @Expose
     private Double latitude;
 
     @Column(name = "longitude")
+    @Expose
     private Double longitude;
 
     @ManyToOne()

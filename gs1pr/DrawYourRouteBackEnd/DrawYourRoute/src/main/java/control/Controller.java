@@ -1,6 +1,7 @@
 package control;
 
 import dao.DAOUser;
+import model.User;
 
 public class Controller {
     
@@ -10,7 +11,7 @@ public class Controller {
         this.DAOUser = new DAOUser();
     }
    
-    public boolean login(String user, String password){
-        return DAOUser.findByNameAndPassword(user, password) != null;
+    public User login(String user, String password){
+        return DAOUser.findByNickNameAndPassword(user, password);
     }
 }

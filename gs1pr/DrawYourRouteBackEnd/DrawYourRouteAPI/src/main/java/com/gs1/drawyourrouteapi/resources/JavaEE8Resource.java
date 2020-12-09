@@ -46,6 +46,13 @@ public class JavaEE8Resource {
         p2.añadirAmigo(p5);
     }
     
+    @GET //Funciona
+    @Path("/ping")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response ping() {
+        return Response.ok("ping").build();
+    }
+    
     
     @GET //Funciona
     @Path("/usuarios")

@@ -17,7 +17,7 @@ public class Main {
         //userDAO.update(new User(1, "pedro", "marín", "iki", "prueba", "ignacio@"));
         //userDAO.remove(2);
         Controller controller = new Controller();
-        System.out.println(controller.login("iki", "prueba123"));
+        System.out.println(controller.login("iki", "prueba"));
         System.out.println(controller.login("iki", "nada"));
         HibernateUtil.shutdown();
     }

@@ -1,12 +1,12 @@
 package model;
 
+
+import com.google.gson.annotations.Expose;
 import java.util.Date;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
-import org.hibernate.annotations.Cascade;
+
 
 @Entity
 @Table(name = "route")
@@ -18,19 +18,22 @@ public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @Expose
     private int id;
 
     @Column(name = "name", nullable = false)
+    @Expose
     private String name;
     
     @Column(name = "date", nullable = false)
+    @Expose
     private Date date;
 
     @ManyToOne()
     @JoinColumn(nullable = false, name = "id_user", foreignKey = @ForeignKey(name = "fk_route_to_user"))
     private User user;
 
-    @OneToMany(mappedBy = "route")
+    @OneToMany(mappedBy = "route", fetch = FetchType.EAGER)
     private List<Coordinate> coordinates;
 
     public Route() {
