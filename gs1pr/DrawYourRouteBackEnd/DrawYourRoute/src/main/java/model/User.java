@@ -118,6 +118,10 @@ public class User {
     public String getEmail() {
         return email;
     }
+    
+    public Set<User> getFriends() {
+        return friends;
+    }
 
     public void setEmail(String email) {
         this.email = email;
