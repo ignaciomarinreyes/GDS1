@@ -61,6 +61,8 @@ public class User {
             foreignKey = @ForeignKey(name = "fk_like_to_user"),
             inverseForeignKey = @ForeignKey(name = "fk_like_to_route"))
     private Set<Route> likes;
+    
+    
 
     public User() {
 
@@ -127,6 +129,14 @@ public class User {
         this.email = email;
     }
 
+    public int getId() {
+        return id;
+    }
+    
+    public void addFriend(User user){
+        friends.add(user);
+    }
+    
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", name=" + name + ", lastName=" + lastName + ", nickName=" + nickName + ", password=" + password + ", email=" + email + '}';

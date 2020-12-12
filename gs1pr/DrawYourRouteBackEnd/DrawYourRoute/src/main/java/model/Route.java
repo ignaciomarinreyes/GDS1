@@ -45,6 +45,13 @@ public class Route {
         this.date = date;
     }
 
+    public Route(String name, Date date, User user, List<Coordinate> coordinates) {
+        this.name = name;
+        this.date = date;
+        this.user = user;
+        this.coordinates = coordinates;
+    }
+
     public String getName() {
         return name;
     }

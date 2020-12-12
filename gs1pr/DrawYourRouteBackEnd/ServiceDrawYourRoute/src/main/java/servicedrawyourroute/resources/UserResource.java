@@ -6,6 +6,7 @@ import control.Controller;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.PersistenceException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,7 +15,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import model.Coordinate;
 import model.User;
+import org.json.JSONObject;
 
 import request.LoginRequest;
 
@@ -44,11 +47,8 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFriendsByNickName(@PathParam("nickName") String nickName) {
         Set<User> friends = controller.getFriendsByNickName(nickName);
-        Set<String> friendsNickName = new HashSet<String>();
-        for (User user : friends) {
-            friendsNickName.add(user.getNickName());
-        }      
-        return Response.ok(friendsNickName).build();
+        String json = converterJavaToJson.toJson(friends);
+        return Response.ok(json).build();
     }
 
     @POST
@@ -64,17 +64,57 @@ public class UserResource {
         return Response.ok(json).build();
     }
     
-    /*
     @POST
-    @Path("loggedUser")
+    @Path("addUser")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response loggedUser(HashMap<String, Object> request) {
+    public Response addUser(HashMap<String, Object> request) {        
+        String name = (String) request.get("name");
+        String lastName = (String) request.get("lastName");
         String nickName = (String) request.get("nickName");
         String password = (String) request.get("password");
-        User loggedUser = controller.login(nickName, password);
-        loggedUser.setPassword("");
-        String json = converterJavaToJson.toJson(loggedUser);
-        return Response.ok(json).build();
-    }*/
+        String email = (String) request.get("email");
+        try{
+            controller.addUser(new User(name, lastName, nickName, password, email));
+            return Response.ok().build();
+        } catch(Exception e){
+            return Response.noContent().build();
+        }      
+    }
+    
+    @POST
+    @Path("addFriend")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addFriend(HashMap<String, Object> request) {        
+        String nickNameLoggedUser = (String) request.get("nickNameLoggedUser");
+        String nickNameFriend = (String) request.get("nickNameFriend");
+        User loggedUser = controller.getUserByNickName(nickNameLoggedUser);
+        User friendUser = controller.getUserByNickName(nickNameFriend);
+        try{
+            controller.addFriend(loggedUser, friendUser);
+            return Response.ok().build();
+        } catch(Exception e){
+            return Response.noContent().build();
+        }      
+    }
+    
+    @POST
+    @Path("addRoute")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addRoute(HashMap<String, Object> request) { 
+        String nameRoute = (String) request.get("name");
+        String dateRoute = (String) request.get("date");
+        String nickNameLoggedUser = (String) request.get("nickNameLoggedUser");
+        Coordinate[] coordinates = (Coordinate[]) request.get("coodenates");
+        User loggedUser = controller.getUserByNickName(nickNameLoggedUser);
+        try{
+            controller.addRoute(nameRoute, dateRoute, loggedUser, coordinates);
+            return Response.ok().build();
+        } catch(Exception e){
+            return Response.noContent().build();
+        }      
+    } 
+    
 }
