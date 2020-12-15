@@ -16,17 +16,21 @@ public class Coordinate {
     @Expose
     private int id;
 
-    @Column(name = "latitude")
+    @Column(name = "latitude", nullable = false)
     @Expose
     private Double latitude;
 
-    @Column(name = "longitude")
+    @Column(name = "longitude", nullable = false)
     @Expose
     private Double longitude;
 
     @ManyToOne()
-    @JoinColumn(nullable = false, name = "id_route", foreignKey = @ForeignKey(name = "fk_coordinate_to_route"))
+    @JoinColumn(nullable = true, name = "id_route", foreignKey = @ForeignKey(name = "fk_coordinate_to_route"))
     private Route route;
+    
+    @ManyToOne()
+    @JoinColumn(nullable = true, name = "id_draw", foreignKey = @ForeignKey(name = "fk_coordinate_to_draw"))
+    private Draw draw;
 
     public Coordinate() {
     }
@@ -36,6 +40,14 @@ public class Coordinate {
         this.longitude = longitude;
     }
 
+    public Coordinate(Double latitude, Double longitude, Route route, Draw draw) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.route = route;
+        this.draw = draw;
+    }
+ 
+
     public Double getLatitude() {
         return latitude;
     }
@@ -44,4 +56,13 @@ public class Coordinate {
         return longitude;
     }
 
+    public void setRoute(Route route) {
+        this.route = route;
+    }
+
+    public void setDraw(Draw draw) {
+        this.draw = draw;
+    }
+    
+    
 }

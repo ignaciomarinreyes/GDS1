@@ -1,5 +1,7 @@
 package control;
 
+import dao.DAOCoordinate;
+import dao.DAODraw;
 import dao.DAORoute;
 import dao.DAOUser;
 import java.text.ParseException;
@@ -12,17 +14,23 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Coordinate;
+import model.Draw;
 import model.Route;
 import model.User;
+import org.hibernate.internal.CoordinatingEntityNameResolver;
 
 public class Controller {
     
     private DAOUser DAOUser;
     private DAORoute DAORoute;
+    private DAODraw DAODraw;
+    private DAOCoordinate DAOCoordinate;
 
     public Controller() {
         this.DAOUser = new DAOUser();
         this.DAORoute = new DAORoute();
+        this.DAODraw = new DAODraw();
+        this.DAOCoordinate = new DAOCoordinate();
     }
    
     public User login(String user, String password){
@@ -46,15 +54,29 @@ public class Controller {
         DAOUser.insertFriend(loggedUser, friendUser);
     }
 
-    public void addRoute(String nameRoute, String dateRoute, User loggedUser, Coordinate[] coordinates) {
+    public void addRoute(String nameRoute, String dateRoute, String nickNameLoggedUser, List<Coordinate> coordinates, int idDraw) {
         Date date = null;
         try {
             date = new SimpleDateFormat("dd/MM/yyyy").parse(dateRoute);
             
         } catch (ParseException ex) {
             ex.printStackTrace();
+        }    
+        User LoggedUser = DAOUser.findByNickName(nickNameLoggedUser);
+        Draw draw = DAODraw.read(idDraw);
+        Route route = new Route(nameRoute, date, 100.0);
+        for(Coordinate coordinate: coordinates){
+            coordinate.setDraw(draw);
+            DAOCoordinate.create(coordinate);
         }
-        List<Coordinate> coordinateList = Arrays.asList(coordinates);
-        DAORoute.create(new Route(nameRoute, date, loggedUser, coordinateList));
+        route.setCoordinates(coordinates);
+        route.setDraw(draw);
+        route.setUser(LoggedUser);
+        DAORoute.create(route);
     }
+    
+    public Draw getDrawById(int idDraw) {
+        return DAODraw.read(idDraw);
+    }
+    
 }

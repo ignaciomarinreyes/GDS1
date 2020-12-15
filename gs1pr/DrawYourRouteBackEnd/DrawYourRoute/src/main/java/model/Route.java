@@ -28,6 +28,10 @@ public class Route {
     @Column(name = "date", nullable = false)
     @Expose
     private Date date;
+    
+    @Column(name = "score", nullable = false)
+    @Expose
+    private Double score;
 
     @ManyToOne()
     @JoinColumn(nullable = false, name = "id_user", foreignKey = @ForeignKey(name = "fk_route_to_user"))
@@ -35,22 +39,22 @@ public class Route {
 
     @OneToMany(mappedBy = "route", fetch = FetchType.EAGER)
     private List<Coordinate> coordinates;
+    
+    @ManyToOne()
+    @JoinColumn(nullable = false, name = "id_draw", foreignKey = @ForeignKey(name = "fk_route_to_draw"))
+    private Draw draw;
 
     public Route() {
 
     }
 
-    public Route(String name, Date date) {
+    public Route(String name, Date date, Double score) {
         this.name = name;
         this.date = date;
+        this.score = score;
     }
 
-    public Route(String name, Date date, User user, List<Coordinate> coordinates) {
-        this.name = name;
-        this.date = date;
-        this.user = user;
-        this.coordinates = coordinates;
-    }
+    
 
     public String getName() {
         return name;
@@ -68,4 +72,17 @@ public class Route {
         this.date = date;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setCoordinates(List<Coordinate> coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public void setDraw(Draw draw) {
+        this.draw = draw;
+    }
+
+    
 }

@@ -27,6 +27,7 @@
 
         <mapping class="model.User" />
         <mapping class="model.Route" />
-        <mapping class="model.Coordinate" />
+        <mapping class="model.Coordinate"/>
+        <mapping class="model.Draw" />
     </session-factory>
 </hibernate-configuration>
