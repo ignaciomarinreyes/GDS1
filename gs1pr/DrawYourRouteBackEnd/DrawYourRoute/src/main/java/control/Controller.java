@@ -66,8 +66,7 @@ public class Controller {
         Draw draw = DAODraw.read(idDraw);
         Route route = new Route(nameRoute, date, 100.0);
         for(Coordinate coordinate: coordinates){
-            coordinate.setDraw(draw);
-            DAOCoordinate.create(coordinate);
+            coordinate.setRoute(route);
         }
         route.setCoordinates(coordinates);
         route.setDraw(draw);
@@ -77,6 +76,22 @@ public class Controller {
     
     public Draw getDrawById(int idDraw) {
         return DAODraw.read(idDraw);
+    }
+
+    public void addDraw(String nameRoute, String dateRoute, String nickNameLoggedUser, List<Coordinate> coordinates) {
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("dd/MM/yyyy").parse(dateRoute);
+            
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }    
+        User loggedUser = DAOUser.findByNickName(nickNameLoggedUser);
+        Draw draw = new Draw(nameRoute, date, loggedUser, coordinates);
+        for(Coordinate coordinate: coordinates){
+            coordinate.setDraw(draw);
+        }
+        DAODraw.create(draw);
     }
     
 }

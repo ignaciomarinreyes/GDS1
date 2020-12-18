@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -45,7 +46,8 @@ public class Draw {
     @JoinColumn(nullable = false, name = "id_user", foreignKey = @ForeignKey(name = "fk_draw_to_user"))
     private User user;
 
-    @OneToMany(mappedBy = "draw", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "draw", fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Coordinate> coordinates;
     
     @OneToMany(mappedBy = "draw", fetch = FetchType.EAGER)
@@ -61,6 +63,8 @@ public class Draw {
         this.user = user;
         this.coordinates = coordinates;
     }
+
+    
 
     public int getVersion() {
         return version;

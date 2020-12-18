@@ -111,23 +111,55 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addRoute(HashMap<String, Object> request) {
-        String nameRoute = (String) request.get("name");
-        String dateRoute = (String) request.get("date");
-        String nickNameLoggedUser = (String) request.get("nickNameLoggedUser");
-        BigDecimal idDraw =  (BigDecimal) request.get("idDraw");
-        ArrayList<JSONObject> coordinatesJSON=  (ArrayList<JSONObject>) request.get("coordinates");
-        
+        JSONObject jsnobject = new JSONObject(request);      
+        String nameRoute = (String) jsnobject.getString("name");
+        String dateRoute = (String) jsnobject.getString("date");
+        String nickNameLoggedUser = (String) jsnobject.getString("nickNameLoggedUser");
+        BigDecimal idDraw = (BigDecimal) jsnobject.getBigDecimal("idDraw");
+        JSONArray jsonArray = jsnobject.getJSONArray("coordinates");   
         List<Coordinate> coordinates = new ArrayList<Coordinate>();
-        for (JSONObject jSONObject : coordinatesJSON) {
-            coordinates.add(new Coordinate(jSONObject.getDouble("latitude"), jSONObject.getDouble("longitude")));
-        } 
-        
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject objectJSON = jsonArray.getJSONObject(i);
+            coordinates.add(new Coordinate(objectJSON.getDouble("lat"), objectJSON.getDouble("lng")));
+        }
         try {
             controller.addRoute(nameRoute, dateRoute, nickNameLoggedUser, coordinates, idDraw.intValue());
             return Response.ok().build();
         } catch (Exception e) {
             return Response.noContent().build();
         }
+    }
+    
+    @POST
+    @Path("addDraw")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addDraw(HashMap<String, Object> request) {
+        JSONObject jsnobject = new JSONObject(request);      
+        String nameRoute = (String) jsnobject.getString("name");
+        String dateRoute = (String) jsnobject.getString("date");
+        String nickNameLoggedUser = (String) jsnobject.getString("nickNameLoggedUser");
+        JSONArray jsonArray = jsnobject.getJSONArray("coordinates");   
+        List<Coordinate> coordinates = new ArrayList<Coordinate>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject objectJSON = jsonArray.getJSONObject(i);
+            coordinates.add(new Coordinate(objectJSON.getDouble("lat"), objectJSON.getDouble("lng")));
+        }
+        try {
+            controller.addDraw(nameRoute, dateRoute, nickNameLoggedUser, coordinates);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return Response.noContent().build();
+        }
+    }
+    
+    @GET
+    @Path("draw/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDrawById(@PathParam("id") int id) {
+        Draw draw = controller.getDrawById(id);
+        String json = converterJavaToJson.toJson(draw);
+        return Response.ok(draw).build();
     }
 
 }

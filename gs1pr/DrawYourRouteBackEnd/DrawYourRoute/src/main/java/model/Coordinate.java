@@ -2,6 +2,8 @@ package model;
 
 import com.google.gson.annotations.Expose;
 import javax.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "coordinate")
@@ -25,11 +27,11 @@ public class Coordinate {
     private Double longitude;
 
     @ManyToOne()
-    @JoinColumn(nullable = true, name = "id_route", foreignKey = @ForeignKey(name = "fk_coordinate_to_route"))
+    @JoinColumn(nullable = true, referencedColumnName="id", name = "id_route", foreignKey = @ForeignKey(name = "fk_coordinate_to_route"))
     private Route route;
     
     @ManyToOne()
-    @JoinColumn(nullable = true, name = "id_draw", foreignKey = @ForeignKey(name = "fk_coordinate_to_draw"))
+    @JoinColumn(nullable = true, referencedColumnName="id", name = "id_draw", foreignKey = @ForeignKey(name = "fk_coordinate_to_draw"))
     private Draw draw;
 
     public Coordinate() {

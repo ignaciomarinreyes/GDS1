@@ -6,6 +6,8 @@ import java.util.Date;
 
 import javax.persistence.*;
 import java.util.List;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 
 @Entity
@@ -37,8 +39,13 @@ public class Route {
     @JoinColumn(nullable = false, name = "id_user", foreignKey = @ForeignKey(name = "fk_route_to_user"))
     private User user;
 
-    @OneToMany(mappedBy = "route", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "route", fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Coordinate> coordinates;
+
+    public int getId() {
+        return id;
+    }
     
     @ManyToOne()
     @JoinColumn(nullable = false, name = "id_draw", foreignKey = @ForeignKey(name = "fk_route_to_draw"))
