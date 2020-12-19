@@ -2,6 +2,7 @@ package control;
 
 import dao.DAOUser;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import model.Coordinate;
 import model.User;
@@ -18,13 +19,14 @@ public class Main {
     public static void main(String[] args) throws ParseException {
         createDataBase();
         HibernateUtil.shutdown();
-        /*Controller controller = new Controller();
-        
-        List<Coordinate> coordinates = new ArrayList<Coordinate>();
+        Controller controller = new Controller();
+        /*List<Coordinate> coordinates = new ArrayList<Coordinate>();
         coordinates.add(new Coordinate(10.2,13.4));
         coordinates.add(new Coordinate(4.2,5.4));
         controller.addRoute("Valsequillo", "01/01/2020", "iki", coordinates, 1);
         */
+        //controller.getNumberLikes(1);
+
 
     }
 

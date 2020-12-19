@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.persistence.PersistenceException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -41,16 +42,23 @@ public class UserResource {
     }
 
     @GET
-    @Path("user/{nickName}")
+    @Path("userByNickname/{nickName}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUsuariosByNickName(@PathParam("nickName") String nickName) {
         User user = controller.getUserByNickName(nickName);
-        String json = converterJavaToJson.toJson(user);
-        return Response.ok(json).build();
+        return Response.ok(user).build();
+    }
+    
+    @GET
+    @Path("userById/{idUser}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUsuariosByIdUser(@PathParam("idUser") int idUser) {
+        User user = controller.getUserById(idUser);
+        return Response.ok(user).build();
     }
 
     @GET
-    @Path("friends/{nickName}")
+    @Path("friendsByNickname/{nickName}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFriendsByNickName(@PathParam("nickName") String nickName) {
         Set<User> friends = controller.getFriendsByNickName(nickName);
@@ -161,5 +169,77 @@ public class UserResource {
         String json = converterJavaToJson.toJson(draw);
         return Response.ok(draw).build();
     }
-
+    
+    @GET
+    @Path("draws/{idUser}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDrawsByUser(@PathParam("idUser") int idUser) {
+        List<Draw> draw = controller.getDrawsByUser(idUser);
+        return Response.ok(draw).build();
+    }
+    
+    @GET
+    @Path("routes/{idUser}") // score no se ve
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRoutes(@PathParam("idUser") int idUser) {
+        List<Route> route = controller.getRoutesByUser(idUser);
+        return Response.ok(route).build();
+    }
+    
+    @DELETE
+    @Path("route/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteRoute(@PathParam("id") int id) {
+        try{
+            controller.deleteRouteById(id);
+            return Response.ok().build();
+        }catch(IllegalStateException e){
+            return Response.noContent().build();
+        }
+    }
+    
+    @DELETE
+    @Path("draw/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteDraw(@PathParam("id") int id) {
+        try{
+            controller.deleteDrawById(id);
+            return Response.ok().build();
+        }catch(IllegalStateException e){
+            return Response.noContent().build();
+        }
+    }
+    
+    @POST
+    @Path("addLike")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addLike(HashMap<String, Object> request) {
+        BigDecimal idLoggedUser = (BigDecimal) request.get("idLoggedUser");
+        BigDecimal idRoute  =  (BigDecimal) request.get("idRoute");
+        User loggedUser = controller.getUserById(idLoggedUser.intValue());
+        Route routeToLike = controller.getRouteById(idRoute.intValue());
+        try {
+            controller.addLike(loggedUser, routeToLike);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return Response.noContent().build();
+        }
+    }
+    
+    @GET
+    @Path("numberLikes/{idRoute}") 
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNumberLikes(@PathParam("idRoute") int idRoute) {
+        int numberLikes = controller.getNumberLikes(idRoute);
+        return Response.ok(numberLikes).build();
+    }
+    
+    @GET
+    @Path("routesMoreLikes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRoutesMoreLikes() {
+        List<Route> routes = controller.getRoutesMoreLikes();
+        return Response.ok(routes).build();
+    }
 }

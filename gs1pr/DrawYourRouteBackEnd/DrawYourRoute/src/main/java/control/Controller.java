@@ -6,18 +6,15 @@ import dao.DAORoute;
 import dao.DAOUser;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Coordinate;
 import model.Draw;
 import model.Route;
 import model.User;
-import org.hibernate.internal.CoordinatingEntityNameResolver;
 
 public class Controller {
     
@@ -93,5 +90,53 @@ public class Controller {
         }
         DAODraw.create(draw);
     }
+
+    public List<Draw> getDrawsByUser(int idUser) {
+        return DAODraw.findByIdUser(idUser);
+    }
+
+    public List<Route> getRoutesByUser(int idUser) {
+        return DAORoute.findByIdUser(idUser);
+    }
+
+    public void deleteRouteById(int id) throws IllegalStateException {
+        DAORoute.remove(id);
+    }
+
+    public void deleteDrawById(int id) {
+        DAODraw.remove(id);
+    }
+
+    public User getUserById(int idUser) {
+        return DAOUser.read(idUser);
+    }
+
+    public Route getRouteById(int idRoute) {
+        return DAORoute.read(idRoute);
+    }
+
+    public void addLike(User loggedUser, Route routeToLike) {
+        DAOUser.insertLike(loggedUser, routeToLike);
+    }
+
+    public int getNumberLikes(int idRoute) {
+        return DAORoute.getNumberLikesByIdRoute(idRoute);
+    }
+
+    public List<Route> getRoutesMoreLikes() {
+        List<Route> routes = DAORoute.getDraws();
+        Collections.sort(routes, new CompararRoutesLikes());
+        if(routes.size() > 10){
+            return routes.subList(0, 9);
+        }else{
+            return routes;
+        }
+    }
     
+    private class CompararRoutesLikes implements Comparator<Route>{       
+        @Override
+        public int compare(Route r1, Route r2) {
+            return new Integer(r2.getLikes().size()).compareTo(new Integer(r1.getLikes().size()));
+        }	    
+    }   
 }

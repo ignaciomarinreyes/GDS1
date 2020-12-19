@@ -2,17 +2,20 @@ package model;
 
 
 import com.google.gson.annotations.Expose;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 
 @Entity
 @Table(name = "route")
-public class Route {
+public class Route{
 
     @Version
     private int version;
@@ -42,6 +45,9 @@ public class Route {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "route", fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Coordinate> coordinates;
+    
+    @ManyToMany(mappedBy="likes",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<User> likes = new HashSet<User>();
 
     public int getId() {
         return id;
@@ -91,5 +97,8 @@ public class Route {
         this.draw = draw;
     }
 
+    public Set<User> getLikes() {
+        return likes;
+    }
     
 }

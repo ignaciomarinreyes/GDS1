@@ -1,9 +1,11 @@
 
 package dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import model.Route;
 import model.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -51,6 +53,7 @@ public class DAOUser extends DAOBase<User>{
         return usuarios.isEmpty() ? null : usuarios.get(0);
     }
     
+    /*
     @Transactional
     public User insertFriendById(int loggedUserId, int friendUserId) {
         List<User> usuarios = null;
@@ -67,7 +70,7 @@ public class DAOUser extends DAOBase<User>{
             e.printStackTrace();
         }
         return usuarios.isEmpty() ? null : usuarios.get(0);
-    }
+    }*/
 
     public void insertFriend(User loggedUser, User friendUser) {
         loggedUser.addFriend(friendUser);
@@ -76,5 +79,14 @@ public class DAOUser extends DAOBase<User>{
         transaction = session.beginTransaction();
         session.saveOrUpdate(loggedUser);
         transaction.commit();        
+    }
+
+    public void insertLike(User loggedUser, Route routeToLike) {
+        loggedUser.addLike(routeToLike);
+        Transaction transaction = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        transaction = session.beginTransaction();
+        session.saveOrUpdate(loggedUser);
+        transaction.commit();    
     }
 }

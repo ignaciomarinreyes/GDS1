@@ -141,6 +141,10 @@ public class User {
         friends.add(user);
     }
     
+    public void addLike(Route route){
+        likes.add(route);
+    }
+    
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", name=" + name + ", lastName=" + lastName + ", nickName=" + nickName + ", password=" + password + ", email=" + email + '}';

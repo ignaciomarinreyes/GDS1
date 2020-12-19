@@ -1,4 +1,3 @@
-
 package dao;
 
 import java.io.Serializable;
@@ -7,12 +6,12 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import persistence.HibernateUtil;
 
-public class DAOBase<T>  implements IDAOBase<T>{
-    
+public class DAOBase<T> implements IDAOBase<T> {
+
     @Override
     public void create(T createClase) {
-        Transaction transaction = null;       
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Transaction transaction = null;
+        try ( Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.save(createClase);
             transaction.commit();
@@ -22,14 +21,14 @@ public class DAOBase<T>  implements IDAOBase<T>{
             }
             e.printStackTrace();
         }
-       
+
     }
-    
+
     @Override
     public T read(int id) {
         T result = null;
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try ( Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             result = (T) session.get(getEntityClass(), id);
             transaction.commit();
@@ -41,12 +40,12 @@ public class DAOBase<T>  implements IDAOBase<T>{
         }
         return result;
     }
-   
+
     @Override
     public void update(T updateClase) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();           
+        try ( Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
             session.saveOrUpdate(updateClase);
             transaction.commit();
         } catch (Exception e) {
@@ -56,25 +55,19 @@ public class DAOBase<T>  implements IDAOBase<T>{
             e.printStackTrace();
         }
     }
-    
+
     @Override
-    public void remove(int id) {
+    public void remove(int id) throws IllegalStateException {
         Transaction transaction = null;
         T removeClase = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            removeClase = (T) session.get(getEntityClass(), id);
-            session.remove(removeClase);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        transaction = session.beginTransaction();
+        removeClase = (T) session.get(getEntityClass(), id);
+        session.remove(removeClase);
+        transaction.commit();
     }
 
     private Class<T> getEntityClass() {
-         return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 }
