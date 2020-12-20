@@ -15,6 +15,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -27,7 +28,6 @@ import model.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import request.LoginRequest;
 
 @Path("userResource")
 public class UserResource {
@@ -125,14 +125,15 @@ public class UserResource {
         String nickNameLoggedUser = (String) jsnobject.getString("nickNameLoggedUser");
         BigDecimal idDraw = (BigDecimal) jsnobject.getBigDecimal("idDraw");
         JSONArray jsonArray = jsnobject.getJSONArray("coordinates");   
-        List<Coordinate> coordinates = new ArrayList<Coordinate>();
+        ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
+        Double score = 0.;
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject objectJSON = jsonArray.getJSONObject(i);
             coordinates.add(new Coordinate(objectJSON.getDouble("lat"), objectJSON.getDouble("lng")));
         }
         try {
-            controller.addRoute(nameRoute, dateRoute, nickNameLoggedUser, coordinates, idDraw.intValue());
-            return Response.ok().build();
+            score = controller.addRoute(nameRoute, dateRoute, nickNameLoggedUser, coordinates, idDraw.intValue());
+            return Response.ok("{ \"score\": " + score + "}").build();
         } catch (Exception e) {
             return Response.noContent().build();
         }
@@ -171,6 +172,15 @@ public class UserResource {
     }
     
     @GET
+    @Path("route/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRouteById(@PathParam("id") int id) {
+        Route route = controller.getRouteById(id);
+        String json = converterJavaToJson.toJson(route);
+        return Response.ok(json).build();
+    }
+    
+    @GET
     @Path("draws/{idUser}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getDrawsByUser(@PathParam("idUser") int idUser) {
@@ -179,7 +189,7 @@ public class UserResource {
     }
     
     @GET
-    @Path("routes/{idUser}") // score no se ve
+    @Path("routes/{idUser}") 
     @Produces(MediaType.APPLICATION_JSON)
     public Response getRoutes(@PathParam("idUser") int idUser) {
         List<Route> route = controller.getRoutesByUser(idUser);
@@ -231,8 +241,13 @@ public class UserResource {
     @Path("numberLikes/{idRoute}") 
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNumberLikes(@PathParam("idRoute") int idRoute) {
-        int numberLikes = controller.getNumberLikes(idRoute);
-        return Response.ok(numberLikes).build();
+        int numberLikes = 0;
+        try{
+           numberLikes = controller.getNumberLikes(idRoute);
+           return Response.ok("{ \"numberLikes\": " + numberLikes + "}").build();
+        } catch(NullPointerException e){
+           return Response.noContent().build();
+        }             
     }
     
     @GET
@@ -241,5 +256,24 @@ public class UserResource {
     public Response getRoutesMoreLikes() {
         List<Route> routes = controller.getRoutesMoreLikes();
         return Response.ok(routes).build();
+    }
+    
+    @PUT
+    @Path("updatedUser")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updatedUser(HashMap<String, Object> request) {
+        BigDecimal idUserToUpdate =  (BigDecimal) request.get("idUserToUpdate");
+        String name = (String) request.get("name");
+        String lastName = (String) request.get("lastName");
+        String nickName = (String) request.get("nickName");
+        String password = (String) request.get("password");
+        String email = (String) request.get("email");
+        try {
+            controller.updateUser(idUserToUpdate.intValue(), new User(name, lastName, nickName, password, email));
+            return Response.ok().build();
+        } catch (Exception e) {
+            return Response.noContent().build();
+        }
     }
 }

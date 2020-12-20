@@ -89,4 +89,24 @@ public class DAOUser extends DAOBase<User>{
         session.saveOrUpdate(loggedUser);
         transaction.commit();    
     }
+    
+    public void updateUser(int idUserToUpdate, User updateClase) {
+        Transaction transaction = null;
+        try ( Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            User userToUpdate = session.get(User.class, idUserToUpdate);
+            userToUpdate.setName(updateClase.getName());
+            userToUpdate.setLastName(updateClase.getLastName());
+            userToUpdate.setNickName(updateClase.getNickName());
+            userToUpdate.setEmail(updateClase.getEmail());
+            userToUpdate.setPassword(updateClase.getPassword());
+            session.saveOrUpdate(userToUpdate);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
 }

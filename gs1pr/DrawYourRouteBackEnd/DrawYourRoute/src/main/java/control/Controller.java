@@ -6,6 +6,7 @@ import dao.DAORoute;
 import dao.DAOUser;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -51,7 +52,7 @@ public class Controller {
         DAOUser.insertFriend(loggedUser, friendUser);
     }
 
-    public void addRoute(String nameRoute, String dateRoute, String nickNameLoggedUser, List<Coordinate> coordinates, int idDraw) {
+    public double addRoute(String nameRoute, String dateRoute, String nickNameLoggedUser, ArrayList<Coordinate> coordinates, int idDraw) {
         Date date = null;
         try {
             date = new SimpleDateFormat("dd/MM/yyyy").parse(dateRoute);
@@ -61,7 +62,8 @@ public class Controller {
         }    
         User LoggedUser = DAOUser.findByNickName(nickNameLoggedUser);
         Draw draw = DAODraw.read(idDraw);
-        Route route = new Route(nameRoute, date, 100.0);
+        double score = Utils.calculateAccuracy(draw.getCoordinates(), coordinates);
+        Route route = new Route(nameRoute, date, score);
         for(Coordinate coordinate: coordinates){
             coordinate.setRoute(route);
         }
@@ -69,6 +71,7 @@ public class Controller {
         route.setDraw(draw);
         route.setUser(LoggedUser);
         DAORoute.create(route);
+        return score;
     }
     
     public Draw getDrawById(int idDraw) {
@@ -119,7 +122,7 @@ public class Controller {
         DAOUser.insertLike(loggedUser, routeToLike);
     }
 
-    public int getNumberLikes(int idRoute) {
+    public int getNumberLikes(int idRoute) throws NullPointerException{
         return DAORoute.getNumberLikesByIdRoute(idRoute);
     }
 
@@ -131,6 +134,10 @@ public class Controller {
         }else{
             return routes;
         }
+    }
+
+    public void updateUser(int idUserToUpdate, User user) {
+       DAOUser.updateUser(idUserToUpdate, user); 
     }
     
     private class CompararRoutesLikes implements Comparator<Route>{       

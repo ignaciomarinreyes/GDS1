@@ -28,7 +28,7 @@ public class DAORoute extends DAOBase<Route>{
         return routes;
     }
     
-    public int getNumberLikesByIdRoute(int idRoute) {   
+    public int getNumberLikesByIdRoute(int idRoute) throws NullPointerException{   
         Route route = read(idRoute);       
         return route.getLikes().size();
     }   
