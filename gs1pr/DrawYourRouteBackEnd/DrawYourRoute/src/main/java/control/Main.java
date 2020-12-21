@@ -1,15 +1,7 @@
 package control;
 
-import dao.DAOUser;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import model.Coordinate;
-import model.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import persistence.HibernateUtil;
@@ -26,8 +18,6 @@ public class Main {
         controller.addRoute("Valsequillo", "01/01/2020", "iki", coordinates, 1);*/
         
         //controller.getNumberLikes(1);
-
-
     }
 
 
