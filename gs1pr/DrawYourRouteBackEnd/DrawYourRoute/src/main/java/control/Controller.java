@@ -145,5 +145,21 @@ public class Controller {
         public int compare(Route r1, Route r2) {
             return new Integer(r2.getLikes().size()).compareTo(new Integer(r1.getLikes().size()));
         }	    
-    }   
+    }
+    
+    public List<Draw> getDraws() {
+        return DAODraw.getAllDraws();
+    }
+    
+    public boolean isUserLikeRoute(int idRoute, int idUser) {
+        Route route = DAORoute.read(idRoute);
+        Set<User> likes = route.getLikes();
+        for (User userGiveLikeToRoute : likes) {
+            if(userGiveLikeToRoute.getId() == idUser){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

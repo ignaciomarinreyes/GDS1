@@ -1,6 +1,7 @@
 
 package dao;
 
+import control.Security;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Query;

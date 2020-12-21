@@ -3,6 +3,7 @@ package servicedrawyourroute.resources;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import control.Controller;
+import control.Security;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +74,7 @@ public class UserResource {
     public Response loggedUser(HashMap<String, Object> request) {
         String nickName = (String) request.get("nickName");
         String password = (String) request.get("password");
-        User loggedUser = controller.login(nickName, password);
+        User loggedUser = controller.login(nickName, Security.convertToMD5(password));
         loggedUser.setPassword("");
         String json = converterJavaToJson.toJson(loggedUser);
         return Response.ok(json).build();
@@ -90,7 +91,7 @@ public class UserResource {
         String password = (String) request.get("password");
         String email = (String) request.get("email");
         try {
-            controller.addUser(new User(name, lastName, nickName, password, email));
+            controller.addUser(new User(name, lastName, nickName, Security.convertToMD5(password), email));
             return Response.ok().build();
         } catch (Exception e) {
             return Response.noContent().build();
@@ -270,10 +271,32 @@ public class UserResource {
         String password = (String) request.get("password");
         String email = (String) request.get("email");
         try {
-            controller.updateUser(idUserToUpdate.intValue(), new User(name, lastName, nickName, password, email));
+            controller.updateUser(idUserToUpdate.intValue(), new User(name, lastName, nickName, Security.convertToMD5(password), email));
             return Response.ok().build();
         } catch (Exception e) {
             return Response.noContent().build();
         }
     }
+    
+    @GET
+    @Path("draws")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDraws() {
+        List<Draw> draw = controller.getDraws();
+        return Response.ok(draw).build();
+    }
+    
+    @GET
+    @Path("isUserLikeRoute/{idRoute}/{idUser}") 
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNumberLikes(@PathParam("idRoute") int idRoute, @PathParam("idUser") int idUser) {
+        boolean isLiked = false;
+        try{
+           isLiked = controller.isUserLikeRoute(idRoute, idUser);
+           return Response.ok("{ \"isLiked\": " + isLiked + "}").build();
+        } catch(NullPointerException e){
+           return Response.noContent().build();
+        }             
+    }
+    
 }

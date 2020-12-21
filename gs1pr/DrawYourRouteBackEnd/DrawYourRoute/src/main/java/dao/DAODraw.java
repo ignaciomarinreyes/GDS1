@@ -34,4 +34,21 @@ public class DAODraw extends DAOBase<Draw>{
         return draws;
     }
     
+    public List<Draw> getAllDraws() {
+        List<Draw> draws = null;
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Query query = session.createNativeQuery("SELECT * FROM draw", Draw.class);
+            draws = query.getResultList();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return draws;
+    }
+    
 }
