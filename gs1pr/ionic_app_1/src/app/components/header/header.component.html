@@ -1,0 +1,23 @@
+<ion-header transluscent>
+  <ion-toolbar color="danger">
+
+    <ion-buttons slot="start">
+        <ion-back-button
+        (click)="back()" 
+        defaultHref="/" 
+        text="Back"
+        color="warning"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title class="ion-text-capitalize" mode=ios>
+        {{ title }}
+    </ion-title>
+
+    <ion-buttons slot="end">
+        <ion-button
+        (click)="logOut()">
+      <ion-icon name="log-out-outline"></ion-icon>
+    </ion-button>
+    </ion-buttons>
+</ion-toolbar>
+</ion-header>

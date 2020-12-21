@@ -1,0 +1,22 @@
+<app-header title="Get the best score you can!"></app-header>
+
+<ion-content>
+  <agm-map 
+  [style.height.px]="height" 
+  [latitude]="lat" 
+  [longitude]="lng" 
+  [zoom]=zoom 
+  [mapDraggable]="false" 
+  (mapReady)="onMapReady($event)">
+    <agm-marker 
+    [latitude]="lat" 
+    [longitude]="lng" 
+    [markerDraggable]="true" 
+    (dragEnd)="dragged(lat, lng, $event)">
+    </agm-marker>
+  </agm-map>
+    <ion-button expand="block" fill="outline" (click)="showDraw()">SHOW-HINT</ion-button> 
+  <ion-button expand="full" (click)="setPoint()">SET POINT</ion-button>
+  <ion-button expand="full" color="warning" (click)="erasePoint()">ERASE POINT</ion-button>
+  <ion-button expand="block" fill="outline" (click)="endDraw($evenT)">FINISH</ion-button>
+</ion-content>

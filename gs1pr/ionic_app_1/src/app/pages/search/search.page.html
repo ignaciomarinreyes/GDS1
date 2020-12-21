@@ -1,0 +1,12 @@
+<app-header title="Search"></app-header>
+
+<ion-content>
+  <ion-searchbar animated (ionChange)="setFilteredItems($event)"></ion-searchbar>
+    <ion-item *ngIf="items" (click)="seeUser()">
+        <ion-label>
+            {{ items.name }}
+        </ion-label>
+    </ion-item>
+</ion-content>
+
+<app-tabs></app-tabs>

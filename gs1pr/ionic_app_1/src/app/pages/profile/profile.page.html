@@ -1,0 +1,47 @@
+<app-header title="Profile"></app-header>
+
+<ion-content>
+
+  <ion-card *ngIf="user">
+    <ion-card-header>
+      <ion-card-subtitle>Nickname: {{ user.nickName }}</ion-card-subtitle>
+      <ion-card-title>{{ user.name }}</ion-card-title>
+    </ion-card-header>
+
+      <ion-list *ngIf="routeList">
+        <ion-item class="animated fadeIn" *ngFor="let item of routeList">
+          <ion-label>
+            <h3>{{item.name}}</h3>
+
+          </ion-label>
+          <ion-label side="right">
+            <p>
+              Score: {{ item.score }}
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+  </ion-card>
+  <ion-item-divider color="tertiary">
+    <ion-label>
+      <h2>Friend List</h2>
+    </ion-label>
+  </ion-item-divider>
+  <ion-list *ngIf="friendList">
+    <ion-item *ngFor="let user of friendList" (click)="seeUser(user.id)">
+      <ion-label>
+            <h3>{{user.name}}</h3>
+
+          </ion-label>
+          <ion-label side="right">
+            <p>
+              email: {{ user.email }}
+            </p>
+          </ion-label>
+
+    </ion-item>
+  </ion-list>
+  
+</ion-content>
+
+<app-tabs></app-tabs>

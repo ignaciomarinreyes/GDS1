@@ -1,0 +1,13 @@
+<form #form="ngForm" (ngSubmit)="onSubmit(form)">
+  <ion-item>
+    <ion-label>
+      <h3>Draw Name:</h3>
+    </ion-label>
+    <ion-input type="text" required
+    name="name"
+    [ngModel]="name"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-button class="animated fadeIn" color="tertiary" [disabled]="!(form.valid)" type="submit" expand="full">Submit</ion-button>
+  </ion-item>
+</form>

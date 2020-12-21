@@ -1,0 +1,30 @@
+<app-header title="Profile"></app-header>
+
+<ion-content>
+
+  <ion-card *ngIf="user">
+    <ion-card-header>
+      <ion-card-subtitle>Nickname: {{ user.nickName }}</ion-card-subtitle>
+      <ion-card-title (click)="addFriend(user.nickName)">{{ user.name }} <ion-icon name="person-add"></ion-icon></ion-card-title>
+    </ion-card-header>
+
+    <ion-list *ngIf="routeList">
+      <ion-item class="animated fadeIn" *ngFor="let item of routeList; let i = index" (click)="like(item.id)" >
+        <ion-label>
+          <h3>{{item.name}}</h3>
+
+        </ion-label>
+        <ion-label side="right">
+          <ion-icon *ngIf="likes[i]" name="thumbs-up-sharp"></ion-icon>
+          <ion-icon *ngIf="!likes[i]" name="thumbs-up-outline"></ion-icon>{{ item.likes.length }} {{ likes[i] }}
+          <p>
+            Score: {{ item.score }}
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+  
+</ion-content>
+
+<app-tabs></app-tabs>

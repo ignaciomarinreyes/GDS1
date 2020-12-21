@@ -1,0 +1,21 @@
+<app-header title="My Routes"></app-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding class="animated fadeIn" *ngFor="let item of routeList">
+      <ion-item><ion-label>
+        <h3>{{item.name}}</h3>
+        <p>
+          Score: {{ item.score }}
+        </p>
+      </ion-label>
+      <ion-label side="right">
+        <ion-icon name="thumbs-up-sharp"></ion-icon> {{ item.likes.length }}
+      </ion-label>
+    </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option (click)="delete(item.id)"><ion-icon slot="icon-only" name="trash-outline"></ion-icon></ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

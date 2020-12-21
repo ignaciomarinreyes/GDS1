@@ -1,0 +1,25 @@
+<app-header title="Start Drawing"></app-header>
+
+<ion-content>
+  <ion-item>
+    <ion-button expand="full" (click)="selfDraw()" >
+      Make a Draw!
+    </ion-button>
+    <ion-button expand="full" (click)="myRoutes()" >
+      My Routes
+    </ion-button>
+    <ion-button expand="full" (click)="topRoutes()">
+      Top Routes
+    </ion-button>
+  </ion-item>
+
+  <ion-list *ngIf="drawList">
+    <ion-item *ngFor="let draw of drawList" class="animated fadeIn" (click)="baseDrawTransfer(draw.id)">
+      <ion-label>
+        <h3>{{draw.name}}</h3>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<app-tabs></app-tabs>

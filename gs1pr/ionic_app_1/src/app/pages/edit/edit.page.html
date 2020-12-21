@@ -1,0 +1,65 @@
+<app-header title="Edit Profile"></app-header>
+
+<ion-content padding class="ion-padding">
+  <form #form="ngForm" (ngSubmit)="onSubmit(form)" class="loginForm">
+
+    <ion-item>
+      <ion-label>
+        <h1>Name:</h1>
+      </ion-label>
+      <ion-input type="text" required
+      name="name"
+      value="currentUser.name"
+      [ngModel]="user.name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h1>Last Name:</h1>
+      </ion-label>
+      <ion-input type="text" required
+      name="lastName"
+      value="currentUser.lastName"
+      [ngModel]="user.lastName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h1>Username:</h1>
+      </ion-label>
+      <ion-input type="text" required
+      name="nickName"
+      value="currentUser.nickName"
+      [ngModel]="user.nickName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h1>Email:</h1>
+      </ion-label>
+      <ion-input type="email" required
+      pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
+      name="email"
+      value="currentUser.email"
+      [ngModel]="user.email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h1>Password:</h1>
+      </ion-label>
+      <ion-input type="password"
+      name="password"
+      required
+      value="currentUser.password"
+      [ngModel]="user.password"></ion-input>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <ion-button class="animated fadeIn loginButton" color="tertiary" [disabled]="!(form.valid)" type="submit" expand="block">Update</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>
+
+<app-tabs></app-tabs>

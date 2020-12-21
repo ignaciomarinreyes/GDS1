@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-title mode=ios>Welcome!</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="ion-padding">
+  <form #form="ngForm" (ngSubmit)="onSubmit(form)" class="loginForm">
+
+    <ion-item>
+      <ion-label position="floating">
+        <h1>Username:</h1>
+      </ion-label>
+      <ion-input type="text" required
+      name="nickname"
+      [ngModel]="user.nickname"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">
+        <h1>Password:</h1>
+      </ion-label>
+      <ion-input type="password"
+      name="password"
+      required
+      [ngModel]="user.password"></ion-input>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <ion-button class="animated fadeIn loginButton" color="tertiary" [disabled]="!(form.valid)" type="submit" expand="block">Acceder</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>
