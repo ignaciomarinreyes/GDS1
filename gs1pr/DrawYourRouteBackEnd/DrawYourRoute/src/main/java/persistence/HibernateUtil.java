@@ -1,6 +1,5 @@
 package persistence;
 
-import javax.net.ssl.SSLException;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;

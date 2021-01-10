@@ -1,5 +1,5 @@
 
-package control;
+package aux;
 
 import java.util.ArrayList;
 import java.util.Arrays;

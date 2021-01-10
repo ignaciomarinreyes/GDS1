@@ -1,4 +1,4 @@
-package control;
+package aux;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

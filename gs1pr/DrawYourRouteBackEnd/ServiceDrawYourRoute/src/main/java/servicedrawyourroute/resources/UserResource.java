@@ -3,17 +3,13 @@ package servicedrawyourroute.resources;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import control.Controller;
-import control.Security;
+import aux.Security;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import javax.persistence.PersistenceException;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -195,30 +191,6 @@ public class UserResource {
     public Response getRoutes(@PathParam("idUser") int idUser) {
         List<Route> route = controller.getRoutesByUser(idUser);
         return Response.ok(route).build();
-    }
-    
-    @DELETE
-    @Path("route/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteRoute(@PathParam("id") int id) {
-        try{
-            controller.deleteRouteById(id);
-            return Response.ok().build();
-        }catch(IllegalStateException e){
-            return Response.noContent().build();
-        }
-    }
-    
-    @DELETE
-    @Path("draw/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteDraw(@PathParam("id") int id) {
-        try{
-            controller.deleteDrawById(id);
-            return Response.ok().build();
-        }catch(IllegalStateException e){
-            return Response.noContent().build();
-        }
     }
     
     @POST

@@ -11,13 +11,6 @@ public class Main {
     public static void main(String[] args) throws ParseException {
         createDataBase();
         HibernateUtil.shutdown();
-        /*Controller controller = new Controller();
-        ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
-        coordinates.add(new Coordinate(11.00002,19.99999));
-        coordinates.add(new Coordinate(11.00002,5.4));
-        controller.addRoute("Valsequillo", "01/01/2020", "iki", coordinates, 1);*/
-        
-        //controller.getNumberLikes(1);
     }
 
 

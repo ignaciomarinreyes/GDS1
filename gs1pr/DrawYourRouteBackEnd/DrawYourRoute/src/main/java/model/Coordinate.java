@@ -2,8 +2,6 @@ package model;
 
 import com.google.gson.annotations.Expose;
 import javax.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "coordinate")

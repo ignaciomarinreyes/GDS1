@@ -1,5 +1,6 @@
 package control;
 
+import aux.Utils;
 import dao.DAOCoordinate;
 import dao.DAODraw;
 import dao.DAORoute;
@@ -98,16 +99,13 @@ public class Controller {
         return DAODraw.findByIdUser(idUser);
     }
 
-    public List<Route> getRoutesByUser(int idUser) {
-        return DAORoute.findByIdUser(idUser);
-    }
-
-    public void deleteRouteById(int id) throws IllegalStateException {
-        DAORoute.remove(id);
-    }
-
-    public void deleteDrawById(int id) {
-        DAODraw.remove(id);
+    public List<Route> getRoutesByUser(int idUser) {       
+        ArrayList<Route> routes = new ArrayList<Route>();
+        for(Route route: DAORoute.findByIdUser(idUser)) {
+            route.setScore(((double)Math.round(route.getScore() * 100d) / 100d));
+            routes.add(route);
+        }
+        return routes;
     }
 
     public User getUserById(int idUser) {
@@ -115,7 +113,9 @@ public class Controller {
     }
 
     public Route getRouteById(int idRoute) {
-        return DAORoute.read(idRoute);
+        Route route = DAORoute.read(idRoute);
+        route.setScore(((double)Math.round(route.getScore() * 100d) / 100d));        
+        return route;
     }
 
     public void addLike(User loggedUser, Route routeToLike) {

@@ -2,15 +2,11 @@ package model;
 
 
 import com.google.gson.annotations.Expose;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
-import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -105,5 +101,10 @@ public class Route{
     
     public Double getScore() {
         return score;
-    }       
+    }
+
+    public void setScore(Double score) {
+        this.score = score;
+    }
+    
 }

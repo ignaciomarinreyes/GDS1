@@ -1,8 +1,6 @@
 
 package dao;
 
-import control.Security;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
@@ -53,25 +51,6 @@ public class DAOUser extends DAOBase<User>{
         }
         return usuarios.isEmpty() ? null : usuarios.get(0);
     }
-    
-    /*
-    @Transactional
-    public User insertFriendById(int loggedUserId, int friendUserId) {
-        List<User> usuarios = null;
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            Query query = session.createNativeQuery("SELECT * FROM user WHERE nickName = ?");
-            usuarios = query.getResultList();
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-        return usuarios.isEmpty() ? null : usuarios.get(0);
-    }*/
 
     public void insertFriend(User loggedUser, User friendUser) {
         loggedUser.addFriend(friendUser);

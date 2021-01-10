@@ -1,6 +1,5 @@
 package dao;
 
-import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
