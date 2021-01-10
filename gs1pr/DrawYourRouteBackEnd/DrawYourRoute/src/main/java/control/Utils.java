@@ -17,10 +17,11 @@ public class Utils {
         double distanceRouteToCopy = calculateDistanceRoute(routeToCopy);
         double distanceBetweenRoutes = calculateDifferenceBetweenRoutes(routeToCopy, routeToDo);
         double error = (distanceBetweenRoutes * 100) / distanceRouteToCopy;
+        double errorRound = ((double)Math.round(error * 100d) / 100d);
         if (error > 100){
-            error = 100;
+            errorRound = 100;
         }
-        return error;
+        return errorRound;
     }
 
     private static double calculateDifferenceBetweenRoutes(ArrayList<Coordinate> routeToCopy, ArrayList<Coordinate> routeToDo) {
